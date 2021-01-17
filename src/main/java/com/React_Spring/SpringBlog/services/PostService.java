@@ -7,6 +7,9 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.React_Spring.SpringBlog.dao.PostDAO;
@@ -84,4 +87,10 @@ public class PostService {
 		
 		postDAO.save(toUpdate);
 	}
+
+	public Page<Post> searchByHeader(String header, int page, int size){
+		Pageable pageable = PageRequest.of(page, size);
+		return postDAO.findByHeaderLike(header, pageable);
+	}
+
 }

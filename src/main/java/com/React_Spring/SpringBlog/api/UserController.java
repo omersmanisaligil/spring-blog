@@ -2,23 +2,20 @@ package com.React_Spring.SpringBlog.api;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 
 import javax.validation.Valid;
+import javax.xml.ws.Response;
 
+import com.React_Spring.SpringBlog.models.Blog;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.NonNull;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.React_Spring.SpringBlog.dao.UserDAO;
 import com.React_Spring.SpringBlog.models.User;
@@ -55,6 +52,16 @@ public class UserController extends Controller{
 		return userService.getOneUserById(id);
 	}
 
+	@GetMapping(path="{id}/blogs")
+	public ResponseEntity<Page<Blog>> getUserBlogs(@PathVariable("id") int id,
+											 @RequestParam(defaultValue = "0") int page,
+											 @RequestParam(defaultValue = "5") int size){
+
+		Page<Blog> userBlogs = userService.getUserBlogs(id, page, size);
+
+		return ResponseEntity.ok().body(userBlogs);
+	}
+
 	@DeleteMapping(path="/delete/{id}")
 	public ResponseEntity<?> delete(@PathVariable("id") int id) {
 		UserDetailsImpl currentUser=getCurrentUser();
@@ -88,6 +95,23 @@ public class UserController extends Controller{
 	@PostMapping("/signup")
 	public ResponseEntity<?> registerUser(@Valid @RequestBody SignUpRequest signUpRequest){
 		return userService.registerUser(signUpRequest);
+	}
+
+	@GetMapping
+	public ResponseEntity<Page<User>> searchByUsername(@RequestParam(value="username") String username,
+													  @RequestParam(defaultValue = "0") int page,
+													  @RequestParam(defaultValue = "10") int size){
+
+		Page<User> users = userService.searchByUsername(username,page,size);
+		return ResponseEntity.ok().body(users);
+	}
+
+	@GetMapping("/byRole")
+	public ResponseEntity<Page<User>> searchByRoles(@RequestParam(value="role") String role,
+												   @RequestParam(defaultValue = "0") int page,
+												   @RequestParam(defaultValue="10") int size){
+		Page<User> users = userService.searchByRoles(role,page,size);
+		return ResponseEntity.ok().body(users);
 	}
 	
 }

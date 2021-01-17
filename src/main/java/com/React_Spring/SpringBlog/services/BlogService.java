@@ -3,8 +3,14 @@ package com.React_Spring.SpringBlog.services;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.support.PagedListHolder;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.React_Spring.SpringBlog.dao.BlogDAO;
@@ -43,5 +49,21 @@ public class BlogService {
 		toUpdate.setId(id);
 		
 		blogDAO.save(toUpdate);
+	}
+	public Set<Blog> searchBlogs(String name){
+		return blogDAO.findByNameLike(name);
+	}
+
+	public Page<Post> getBlogPosts(int id, int page, int size){
+		Blog blog = blogDAO.findById(id).get();
+		List<Post> posts = blog.getPosts();
+
+		PagedListHolder postPage = new PagedListHolder(posts);
+		postPage.setPageSize(size);
+		postPage.setPage(page);
+
+		Page<Post> blogPosts = new PageImpl<Post>(postPage.getPageList());
+
+		return blogPosts;
 	}
 }

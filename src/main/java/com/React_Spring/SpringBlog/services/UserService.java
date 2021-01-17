@@ -8,7 +8,13 @@ import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
+import com.React_Spring.SpringBlog.models.Blog;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.support.PagedListHolder;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -169,4 +175,28 @@ public class UserService{
 	public User findUserByUsername(String username) {
 		return userDAO.findByUsername(username).get();
 	}
+
+	public Page<User> searchByUsername(String username, int page, int size){
+		Pageable pageable = PageRequest.of(page, size);
+		return userDAO.searchByUsername(username,pageable);
+	}
+
+	public Page<User> searchByRoles(String role, int page, int size){
+		Pageable pageable = PageRequest.of(page, size);
+		return roleDAO.findUsersByRole(role,pageable);
+	}
+
+	public Page<Blog> getUserBlogs(int id, int page, int size){
+		User user = userDAO.findById(id).get();
+		List<Blog> blogs = user.getBlogs();
+
+		PagedListHolder<Blog> blogPage = new PagedListHolder(blogs);
+		blogPage.setPage(page);
+		blogPage.setPageSize(size);
+
+		Page<Blog> userBlogs = new PageImpl<>(blogPage.getPageList());
+
+		return userBlogs;
+	}
+
 }

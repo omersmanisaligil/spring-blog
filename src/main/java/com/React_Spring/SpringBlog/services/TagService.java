@@ -6,6 +6,9 @@ import java.util.Optional;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.React_Spring.SpringBlog.dao.TagDAO;
@@ -69,5 +72,8 @@ public class TagService {
 		else
 			return false;
 	}
-	
+	public Page<Post> findPostsByTag(String tagName, int page, int size){
+		Pageable pageable = PageRequest.of(page, size);
+		return tagDAO.findPostsWithTag(tagName, pageable);
+	}
 }

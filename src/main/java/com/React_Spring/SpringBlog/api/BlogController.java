@@ -2,19 +2,15 @@ package com.React_Spring.SpringBlog.api;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
+import com.React_Spring.SpringBlog.models.Post;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.NonNull;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.React_Spring.SpringBlog.models.Blog;
 import com.React_Spring.SpringBlog.security.UserDetailsImpl;
@@ -35,6 +31,14 @@ public class BlogController extends Controller{
 	@GetMapping(path="{id}")
 	public Optional<Blog> getOneById(@PathVariable("id") int id){
 		return blogService.getOneBlogById(id);
+	}
+
+	@GetMapping(path="{id}/posts")
+	public ResponseEntity<Page<Post>> getBlogPosts(@PathVariable("id") int id,
+												   @RequestParam(defaultValue = "0") int page,
+												   @RequestParam(defaultValue = "5") int size){
+		Page<Post> blogPosts =blogService.getBlogPosts(id, page, size);
+		return ResponseEntity.ok().body(blogPosts);
 	}
 	
 	@PostMapping("/add")
@@ -75,5 +79,11 @@ public class BlogController extends Controller{
 		else {
 			return unauthorized();
 		}
+	}
+
+	@GetMapping
+	public ResponseEntity<Set<Blog>> searchBlogs(@RequestParam(value="name", required = false) String name){
+		Set<Blog> blogs=blogService.searchBlogs(name);
+		return ResponseEntity.ok().body(blogs);
 	}
 }

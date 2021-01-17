@@ -18,6 +18,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 import com.React_Spring.SpringBlog.models.Permission;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name="ROLES")
@@ -61,6 +62,7 @@ public class Role {
 	public void setPermissions(Set<Permission> permissions) {
 		this.permissions = permissions;
 	}
+	@JsonIgnore
 	public Set<User> getUsers() {
 		return users;
 	}
