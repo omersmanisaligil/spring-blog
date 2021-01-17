@@ -59,8 +59,8 @@ public class TagController extends Controller{
 
 	@GetMapping
 	public ResponseEntity<Page<Post>> findPostsByTag(@RequestParam(value="tagName") String tagName,
-													@RequestParam(defaultValue="0") int page,
-													@RequestParam(defaultValue = "10") int size){
+							 @RequestParam(defaultValue="0") int page,
+							 @RequestParam(defaultValue = "10") int size){
 		Page<Post> posts = tagService.findPostsByTag(tagName,page,size);
 		return ResponseEntity.ok().body(posts);
 	}

@@ -75,8 +75,8 @@ public class PostController extends Controller {
 
 	@GetMapping
 	public ResponseEntity<Page<Post>> searchByHeader(@RequestParam("header") String header,
-													 @RequestParam(defaultValue = "0") int page,
-													 @RequestParam(defaultValue = "10") int size){
+							 @RequestParam(defaultValue = "0") int page,
+							 @RequestParam(defaultValue = "10") int size){
 		Page<Post> posts=postService.searchByHeader(header, page, size);
 		return ResponseEntity.ok().body(posts);
 	}

@@ -2,11 +2,8 @@ package com.React_Spring.SpringBlog.api;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
-
 
 import javax.validation.Valid;
-import javax.xml.ws.Response;
 
 import com.React_Spring.SpringBlog.models.Blog;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,8 +51,8 @@ public class UserController extends Controller{
 
 	@GetMapping(path="{id}/blogs")
 	public ResponseEntity<Page<Blog>> getUserBlogs(@PathVariable("id") int id,
-											 @RequestParam(defaultValue = "0") int page,
-											 @RequestParam(defaultValue = "5") int size){
+						       @RequestParam(defaultValue = "0") int page,
+						       @RequestParam(defaultValue = "5") int size){
 
 		Page<Blog> userBlogs = userService.getUserBlogs(id, page, size);
 

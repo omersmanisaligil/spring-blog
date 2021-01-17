@@ -35,8 +35,8 @@ public class BlogController extends Controller{
 
 	@GetMapping(path="{id}/posts")
 	public ResponseEntity<Page<Post>> getBlogPosts(@PathVariable("id") int id,
-												   @RequestParam(defaultValue = "0") int page,
-												   @RequestParam(defaultValue = "5") int size){
+						       @RequestParam(defaultValue = "0") int page,
+						       @RequestParam(defaultValue = "5") int size){
 		Page<Post> blogPosts =blogService.getBlogPosts(id, page, size);
 		return ResponseEntity.ok().body(blogPosts);
 	}
