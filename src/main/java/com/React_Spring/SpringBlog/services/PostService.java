@@ -34,11 +34,11 @@ public class PostService {
 		return (List<Post>) postDAO.findAll();
 	}
 	
-	public Optional<Post> getOnePostById(int id) {
+	public Optional<Post> getOnePostById(Long id) {
 		return postDAO.findById(id);
 	}
 	
-	public void deletePost(int id) {
+	public void deletePost(Long id) {
 		Post post=postDAO.findById(id).get();
 		
 		post.getBlog().getPosts().remove(post);
@@ -79,10 +79,8 @@ public class PostService {
 		postDAO.save(post);
 	}
 	
-	public void updatePost(Post post, int id) {
-		Post toUpdate=postDAO.findById(id).get();
-	
-		toUpdate=post;
+	public void updatePost(Post post,Long id) {
+		Post toUpdate=post;
 		post.setId(id);
 		
 		postDAO.save(toUpdate);

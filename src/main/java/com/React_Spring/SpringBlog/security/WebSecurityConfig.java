@@ -33,12 +33,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	private UserDetailsService userDetailsService;
 
 	@Autowired
-    private AuthEntryPointJwt unauthorizedHandler;
+    	private AuthEntryPointJwt unauthorizedHandler;
 	
 	@Bean
-    public AuthTokenFilter jwtAuthenticationFilter() {
-        return new AuthTokenFilter();
-    }
+    	public AuthTokenFilter jwtAuthenticationFilter() {
+        	return new AuthTokenFilter();
+    	}
 	
 	@Bean
 	@Override
@@ -52,7 +52,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	}
 	
 	@Bean
-    public BCryptPasswordEncoder bCryptPasswordEncoder() {
+    	public BCryptPasswordEncoder bCryptPasswordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
@@ -69,8 +69,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.
-			cors().and().csrf().disable()
+		http
+			.cors().and().csrf().disable()
 			.exceptionHandling().authenticationEntryPoint(unauthorizedHandler)
 			.and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 			.and()
@@ -87,5 +87,4 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		
 		http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 	}
-
 }

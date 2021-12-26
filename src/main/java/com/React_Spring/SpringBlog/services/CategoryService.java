@@ -23,11 +23,11 @@ public class CategoryService {
 		return (List<Category>) categoryDAO.findAll();
 	}
 	
-	public Optional<Category> getOneCategoryById(int id) {
+	public Optional<Category> getOneCategoryById(Long id) {
 		return categoryDAO.findById(id);
 	}
 	
-	public void deleteCategory(int id) {
+	public void deleteCategory(Long id) {
 		categoryDAO.deleteById(id);
 	}
 	
@@ -35,15 +35,8 @@ public class CategoryService {
 		categoryDAO.save(category);
 	}
 	
-	public void updateCategory(Category category,int id) {
-		Category toUpdate=categoryDAO.findById(id).get();		
-		/*TODO
-		I don't want to set id by hand
-		to the correct value
-		I don't want to set all the other values one
-		by one here, so as a healthier solution
-		seperate partial update methods are needed*/ 
-		toUpdate=category;
+	public void updateCategory(Category category,Long id) {
+		Category toUpdate=category;
 		toUpdate.setId(id);
 		
 		categoryDAO.save(toUpdate);

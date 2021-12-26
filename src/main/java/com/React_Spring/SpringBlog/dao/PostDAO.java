@@ -13,7 +13,7 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 import java.util.Set;
 
-public interface PostDAO extends JpaRepository<Post,Integer> {
+public interface PostDAO extends JpaRepository<Post,Long> {
     @Override
     Page<Post> findAll(Pageable pageable);
 

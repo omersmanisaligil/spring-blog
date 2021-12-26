@@ -1,10 +1,9 @@
 package com.React_Spring.SpringBlog.api;
 
+import com.React_Spring.SpringBlog.models.User;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
-
-import com.React_Spring.SpringBlog.security.UserDetailsImpl;
 
 public class Controller {
 	public ResponseEntity<?> ok(){
@@ -16,11 +15,11 @@ public class Controller {
 		return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 	}
 	
-	public UserDetailsImpl getCurrentUser() {
-		return (UserDetailsImpl)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+	public User getCurrentUser() {
+		return (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 	}
 	
-	public boolean isItCurrentUser(int id,UserDetailsImpl currentUser) {
+	public boolean isItCurrentUser(Long id, User currentUser) {
 		return currentUser.getId()==id;
 	}
 }

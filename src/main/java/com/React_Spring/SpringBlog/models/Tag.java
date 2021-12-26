@@ -20,8 +20,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Table(name="TAG_TABLE")
 public class Tag {
 	
-	@Id @NonNull @GeneratedValue(strategy=GenerationType.IDENTITY) @Column(name="TAG_ID")
-	private int id;
+	@Id @NonNull @GeneratedValue(strategy=GenerationType.AUTO) @Column(name="TAG_ID")
+	private Long id;
 	
 	@NonNull @Column(name="TAG_NAME")
 	private String tagName;
@@ -32,22 +32,31 @@ public class Tag {
 		
 	public Tag() {}
 
-	public Tag(int id, String tagName, Set<Post> posts) {
-		super();
-		this.id = id;
-		this.tagName = tagName;
-		this.posts = posts;
+	public Tag(Long id, String tagName, Set<Post> posts) {
+	    super();
+	    this.id = id;
+	    this.tagName = tagName;
+	    this.posts = posts;
 	};
+
+	public Tag(String tagName){
+	    this.tagName = tagName;
+	}
+
+	public Tag(String tagName, Set<Post> posts){
+	    this.tagName = tagName;
+	    this.posts = posts;
+	}
 	
 	public String toString() {
 		return tagName;
 	}
 	
-	public int getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -65,5 +74,10 @@ public class Tag {
 
 	public void setPosts(Set<Post> posts) {
 		this.posts = posts;
-	}	
+	}
+
+	@Override
+    	public boolean equals(Object tag){
+	    return ((Tag)tag).getTagName() == this.tagName;
+	}
 }

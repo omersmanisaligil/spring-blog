@@ -33,13 +33,13 @@ public class TagController extends Controller{
 	}
 
 	@GetMapping(path="{id}")
-	public Optional<Tag> getOneById(@PathVariable("id") int id) {
+	public Optional<Tag> getOneById(@PathVariable("id") Long id) {
 		return tagService.getOneTagById(id);
 	}
 	
 	@GetMapping(path="{id}/posts")
-	public Set<Post> getPostsWithTag(@PathVariable("id") int id){
-		return tagService.getPostsWithtag(id);
+	public Set<Post> getPostsWithTag(@PathVariable("id") Long id){
+		return tagService.getPostsWithTag(id);
 	}
 
 	@PostMapping
@@ -48,12 +48,12 @@ public class TagController extends Controller{
 	}
 
 	@DeleteMapping(path="{id}")
-	public void delete(@PathVariable("id") int id) {
+	public void delete(@PathVariable("id") Long id) {
 		tagService.deleteTag(id);
 	}
 
 	@PutMapping(path="{id}")
-	public void updateTag(@Validated @NonNull @RequestBody Tag tag,@PathVariable("id") int id) {
+	public void updateTag(@Validated @NonNull @RequestBody Tag tag,@PathVariable("id") Long id) {
 		tagService.updateTag(tag,id);
 	}
 

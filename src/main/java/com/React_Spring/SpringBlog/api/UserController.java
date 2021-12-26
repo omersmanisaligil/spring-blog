@@ -3,8 +3,6 @@ package com.React_Spring.SpringBlog.api;
 import java.util.List;
 import java.util.Optional;
 
-import javax.validation.Valid;
-
 import com.React_Spring.SpringBlog.models.Blog;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -16,9 +14,6 @@ import org.springframework.web.bind.annotation.*;
 
 import com.React_Spring.SpringBlog.dao.UserDAO;
 import com.React_Spring.SpringBlog.models.User;
-import com.React_Spring.SpringBlog.payload.request.LoginRequest;
-import com.React_Spring.SpringBlog.payload.request.SignUpRequest;
-import com.React_Spring.SpringBlog.security.UserDetailsImpl;
 import com.React_Spring.SpringBlog.services.UserService;
 
 
@@ -45,12 +40,12 @@ public class UserController extends Controller{
 		return userService.getAllUsers();
 	}
 	@GetMapping(path="{id}")
-	public Optional<User> getOneById(@PathVariable("id") int id) {
+	public Optional<User> getOneById(@PathVariable("id") Long id) {
 		return userService.getOneUserById(id);
 	}
 
 	@GetMapping(path="{id}/blogs")
-	public ResponseEntity<Page<Blog>> getUserBlogs(@PathVariable("id") int id,
+	public ResponseEntity<Page<Blog>> getUserBlogs(@PathVariable("id") Long id,
 						       @RequestParam(defaultValue = "0") int page,
 						       @RequestParam(defaultValue = "5") int size){
 
@@ -60,8 +55,8 @@ public class UserController extends Controller{
 	}
 
 	@DeleteMapping(path="/delete/{id}")
-	public ResponseEntity<?> delete(@PathVariable("id") int id) {
-		UserDetailsImpl currentUser=getCurrentUser();
+	public ResponseEntity<?> delete(@PathVariable("id") Long id) {
+		User currentUser=getCurrentUser();
 
 		if(isItCurrentUser(id,currentUser)) {
 			userService.deleteUser(id);
@@ -72,8 +67,8 @@ public class UserController extends Controller{
 		}
 	}
 	@PutMapping(path="/edit/{id}")
-	public ResponseEntity<?> updateUser(@Validated @NonNull @RequestBody User user,@PathVariable("id") int id) {		
-		UserDetailsImpl currentUser=getCurrentUser();
+	public ResponseEntity<?> updateUser(@Validated @NonNull @RequestBody User user,@PathVariable("id") Long id) {
+		User currentUser=getCurrentUser();
 		
 		if(isItCurrentUser(id,currentUser)) {
 			return userService.updateUser(user,id);
@@ -82,16 +77,6 @@ public class UserController extends Controller{
 			return unauthorized();
 		}
 		
-	}
-	
-	@PostMapping("/login") 
-	public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest){
-		return userService.authenticateUser(loginRequest);
-	}
-	
-	@PostMapping("/signup")
-	public ResponseEntity<?> registerUser(@Valid @RequestBody SignUpRequest signUpRequest){
-		return userService.registerUser(signUpRequest);
 	}
 
 	@GetMapping

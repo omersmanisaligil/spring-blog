@@ -11,10 +11,9 @@ import com.React_Spring.SpringBlog.models.User;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-public interface UserDAO extends JpaRepository<User,Integer> {
+public interface UserDAO extends JpaRepository<User,Long> {
 	Optional<User> findByEmail(String email);
 	Optional<User> findByUsername(String username);
-	Optional<User> findById(int id);
 
 	@Query(value="SELECT u FROM User u WHERE u.username LIKE %:username%")
 	Page<User> searchByUsername(@Param("username") String username,Pageable pageable);

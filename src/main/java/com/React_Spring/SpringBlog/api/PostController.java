@@ -2,8 +2,8 @@ package com.React_Spring.SpringBlog.api;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
+import com.React_Spring.SpringBlog.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -12,7 +12,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import com.React_Spring.SpringBlog.models.Post;
-import com.React_Spring.SpringBlog.security.UserDetailsImpl;
 import com.React_Spring.SpringBlog.services.PostService;
 
 
@@ -29,13 +28,13 @@ public class PostController extends Controller {
 	}
 	
 	@GetMapping(path="{id}")
-	public Optional<Post> getOneById(@PathVariable("id") int id){		
+	public Optional<Post> getOneById(@PathVariable("id") Long id){
 		return postService.getOnePostById(id);
 	}
 	
 	@PostMapping("/add")
 	public ResponseEntity<?> addPost(@Validated @NonNull @RequestBody Post post) {
-		UserDetailsImpl currentUser=getCurrentUser();
+		User currentUser=getCurrentUser();
 		
 		if(isItCurrentUser(post.getUserId(), currentUser)) {
 			postService.addPost(post);
@@ -47,8 +46,8 @@ public class PostController extends Controller {
 	}
 	
 	@DeleteMapping(path="{id}")
-	public ResponseEntity<?> deletePost(@PathVariable("id") int id) {
-		UserDetailsImpl currentUser=getCurrentUser();
+	public ResponseEntity<?> deletePost(@PathVariable("id") Long id) {
+		User currentUser=getCurrentUser();
 		Post post=getOneById(id).get();
 		
 		if(isItCurrentUser(post.getUserId(),currentUser)) {
@@ -61,8 +60,8 @@ public class PostController extends Controller {
 			
 	}
 	@PutMapping(path="/edit/{id}")
-	public ResponseEntity<?> updatePost(@Validated @NonNull @RequestBody Post post, @PathVariable("id") int id) {
-		UserDetailsImpl currentUser=getCurrentUser();
+	public ResponseEntity<?> updatePost(@Validated @NonNull @RequestBody Post post, @PathVariable("id") Long id) {
+		User currentUser=getCurrentUser();
 		
 		if(isItCurrentUser(post.getUserId(),currentUser)){
 			postService.updatePost(post,id);

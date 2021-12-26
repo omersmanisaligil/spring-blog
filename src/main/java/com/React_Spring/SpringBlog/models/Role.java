@@ -24,7 +24,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Table(name="ROLES")
 public class Role {
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY) @Column(name="ROLE_ID")
+	@GeneratedValue(strategy=GenerationType.AUTO) @Column(name="ROLE_ID")
 	private int role_id;
 	
 	@Enumerated(EnumType.STRING)

@@ -25,10 +25,10 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Table(name="POST_TABLE")
 public class Post {
 
-	@Id @NonNull @GeneratedValue(strategy=GenerationType.IDENTITY) @Column(name="POST_ID")
-	private int id;
+	@Id @NonNull @GeneratedValue(strategy=GenerationType.AUTO) @Column(name="POST_ID")
+	private Long id;
 	@NonNull @Column(name="USER_ID")
-	private int userId;
+	private Long userId;
 	@NonNull @Column(name="HEADER")
 	private String header;
 	@NonNull @Column(name="BODY")
@@ -38,7 +38,7 @@ public class Post {
 	private String[] tags;
 
 	@Column(name="BLOG_ID")
-	private int blogId;
+	private Long blogId;
 	
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="BLOG_ID", referencedColumnName = "BLOG_ID", insertable=false, updatable=false)
@@ -51,54 +51,54 @@ public class Post {
 	joinColumns = {@JoinColumn(name="POST_ID")},
 	inverseJoinColumns = {@JoinColumn(name="TAG_ID")})
 	private Set<Tag> postTags=new HashSet<Tag>();
-
-	@Override
-	public String toString() {
-		return header+"/n"+body;
-	}
 	
 
-	public Post(int id, int userId, String header, String body, String[] tags, int blogId, Blog blog, Set<Tag> postTags) {
-		super();
-		this.id = id;
-		this.userId = userId;
-		this.header = header;
-		this.body = body;
-		this.tags = tags;
-		this.blogId = blogId;
-		this.blog = blog;
-		this.postTags = postTags;
+	public Post(Long id, Long userId, String header, String body, String[] tags, Long blogId, Blog blog, Set<Tag> postTags) {
+	    super();
+	    this.id = id;
+	    this.userId = userId;
+	    this.header = header;
+	    this.body = body;
+	    this.tags = tags;
+	    this.blogId = blogId;
+	    this.blog = blog;
+	    this.postTags = postTags;
 	}
 
-	public Post(int id, int userId, String header, String body, String[] tags, int blogId, Blog blog) {
-		super();
-		this.id = id;
-		this.userId = userId;
-		this.header = header;
-		this.body = body;
-		this.tags = tags;
-		this.blogId = blogId;
-		this.blog = blog;
+	public Post(Long id, Long userId, String header, String body, String[] tags, Long blogId, Blog blog) {
+	    super();
+	    this.id = id;
+	    this.userId = userId;
+	    this.header = header;
+	    this.body = body;
+	    this.tags = tags;
+	    this.blogId = blogId;
+	    this.blog = blog;
+	}
+	public Post(Long userId, String header, String body){
+	    this.userId = userId;
+	    this.header = header;
+	    this.body = body;
 	}
 	public Post() {}
 
 
-	public int getId() {
+	public Long getId() {
 		return id;
 	}
 
 
-	public void setId(int id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
 
-	public int getUserId() {
+	public Long getUserId() {
 		return userId;
 	}
 
 
-	public void setUserId(int userId) {
+	public void setUserId(Long userId) {
 		this.userId = userId;
 	}
 
@@ -123,12 +123,12 @@ public class Post {
 	}
 
 
-	public int getBlogId() {
+	public Long getBlogId() {
 		return blogId;
 	}
 
 
-	public void setBlogId(int blogId) {
+	public void setBlogId(Long blogId) {
 		this.blogId = blogId;
 	}
 
@@ -159,4 +159,17 @@ public class Post {
 	public void setTags(String[] tags) {
 		this.tags = tags;
 	}
+
+	@Override
+    	public boolean equals(Object post){
+	    Post postk = (Post)post;
+
+	    return postk.getHeader().equals(this.header)
+	          && postk.getBody().equals(this.body);
+	}
+
+	@Override
+    	public String toString() {
+	return header+"/n"+body;
+    }
 }

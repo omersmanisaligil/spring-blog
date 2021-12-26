@@ -1,9 +1,6 @@
 package com.React_Spring.SpringBlog.models;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -23,15 +20,16 @@ import org.springframework.lang.NonNull;
 import org.springframework.security.core.GrantedAuthority;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.springframework.security.core.userdetails.UserDetails;
 
 
 @Entity 
 
 @Table(name="USERS")
-public class User{
+public class User implements UserDetails  {
 	
-	@Id @NonNull @GeneratedValue(strategy=GenerationType.IDENTITY) @Column(name="USER_ID")
-	private int id;
+	@Id @GeneratedValue(strategy=GenerationType.AUTO) @Column(name="USER_ID")
+	private Long id;
 	
 	@NonNull @Column(name="USERNAME")
 	private String username;
@@ -44,7 +42,16 @@ public class User{
 	
 	@Column(name="BIO")
 	private String bio;
-	
+
+	@OneToMany(mappedBy="user", orphanRemoval=true, cascade=CascadeType.ALL, fetch = FetchType.LAZY)
+	private List<Blog> blogs=new ArrayList<Blog>();
+
+	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinTable(name="USER_ROLE",
+	joinColumns = {@JoinColumn(name="USER_ID")},
+	inverseJoinColumns = {@JoinColumn(name="ROLE_ID")})
+	private Set<Role> userRoles=new HashSet<Role>();
+
 	@Column(name="NONEXPIRED")
 	private final boolean isAccountNonExpired=true;
 	
@@ -58,16 +65,23 @@ public class User{
 	private final boolean isEnabled=true;
 	
 	@NonNull @Transient
-	private final List<? extends GrantedAuthority> grantedAuthorities=null;	
+	private Collection<? extends GrantedAuthority> grantedAuthorities;
 
 	public User() {
 		
 	}
+    	public User(Long id, String username, String password, String email) {
+		this.id = id;
+	    	this.username=username;
+		this.password=password;
+		this.email=email;
+    	}
 	public User(String username, String password, String email) {
 		this.username=username;
 		this.password=password;
 		this.email=email;
 	}
+
 	public User(String username, String password, String email, Set<Role> userRoles) {
 		this.username=username;
 		this.password=password;
@@ -75,7 +89,7 @@ public class User{
 		this.userRoles=userRoles;
 	}
 	
-	public User(int id, String username, String password, String email, String bio, List<Blog> blogs,
+	public User(Long id, String username, String password, String email, String bio, List<Blog> blogs,
 			Set<Role> userRoles) {
 		super();
 		this.id = id;
@@ -87,19 +101,10 @@ public class User{
 		this.userRoles = userRoles;
 	}
 
-	@OneToMany(mappedBy="user", orphanRemoval=true, cascade=CascadeType.PERSIST)
-	private List<Blog> blogs=new ArrayList<Blog>();
-	
-	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	@JoinTable(name="USER_ROLE",
-	joinColumns = {@JoinColumn(name="USER_ID")},
-	inverseJoinColumns = {@JoinColumn(name="ROLE_ID")})
-	private Set<Role> userRoles=new HashSet<Role>();
-
-	public int getId() {
+	public Long getId() {
 		return id;
 	}
-	public void setId(int id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 	public String getUsername() {
@@ -108,7 +113,13 @@ public class User{
 	public void setUsername(String username) {
 		this.username = username;
 	}
-	public String getPassword() {
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+	return grantedAuthorities;
+    }
+    public void setAuthorities(Collection<? extends GrantedAuthority> grantedAuthorities){this.grantedAuthorities=grantedAuthorities;}
+    public String getPassword() {
 		return password;
 	}
 	public void setPassword(String password) {
@@ -150,10 +161,4 @@ public class User{
 	public boolean isEnabled() {
 		return isEnabled;
 	}
-	public List<? extends GrantedAuthority> getGrantedAuthorities() {
-		return grantedAuthorities;
-	}
-
-	
-
 }

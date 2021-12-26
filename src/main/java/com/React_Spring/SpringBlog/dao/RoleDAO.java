@@ -12,9 +12,9 @@ import com.React_Spring.SpringBlog.models.Role;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-public interface RoleDAO extends JpaRepository<Role, Integer> {
+public interface RoleDAO extends JpaRepository<Role, Long> {
 	Optional<Role> findByName(ERole name);
 
 	@Query(value="SELECT r.users FROM Role r WHERE r.name=:role")
-	Page<User> findUsersByRole(@Param(value="role") String role, Pageable pageable);
+	Page<User> findUsersByRole(@Param(value="role") ERole role, Pageable pageable);
 }

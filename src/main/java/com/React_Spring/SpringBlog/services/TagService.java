@@ -29,14 +29,14 @@ public class TagService {
 		return (List<Tag>) tagDAO.findAll();
 	}
 	
-	public Optional<Tag> getOneTagById(int id) {
+	public Optional<Tag> getOneTagById(Long id) {
 		return tagDAO.findById(id);
 	}
-	public Set<Post> getPostsWithtag(int id){
+	public Set<Post> getPostsWithTag(Long id){
 		return tagDAO.findById(id).get().getPosts();
 	}
 	
-	public void deleteTag(int id) {
+	public void deleteTag(Long id) {
 		
 		Tag tag=tagDAO.findById(id).get();
 		
@@ -56,10 +56,8 @@ public class TagService {
 		}
 	}
 
-	public void updateTag(Tag tag,int id) {
-		Tag toUpdate=tagDAO.findById(id).get();
-		
-		toUpdate=tag;
+	public void updateTag(Tag tag,Long id) {
+		Tag toUpdate=tag;
 		toUpdate.setId(id);
 		
 		tagDAO.save(toUpdate);

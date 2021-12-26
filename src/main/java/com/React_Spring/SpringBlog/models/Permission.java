@@ -18,7 +18,7 @@ import javax.persistence.Table;
 @Table(name="PERMISSIONS")
 public class Permission {
 	
-	@Id @GeneratedValue(strategy=GenerationType.IDENTITY) @Column(name="PERMISSION_ID")
+	@Id @GeneratedValue(strategy=GenerationType.AUTO) @Column(name="PERMISSION_ID")
 	private int permission_id;
 
 	@Enumerated(EnumType.STRING)

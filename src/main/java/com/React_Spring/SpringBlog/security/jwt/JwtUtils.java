@@ -2,13 +2,12 @@ package com.React_Spring.SpringBlog.security.jwt;
 
 import java.util.Date;
 
+import com.React_Spring.SpringBlog.models.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
-
-import com.React_Spring.SpringBlog.security.UserDetailsImpl;
 
 import io.jsonwebtoken.*;
 
@@ -24,7 +23,7 @@ public class JwtUtils {
 	
 	public String generateJwtToken(Authentication authentication) {
 
-		UserDetailsImpl userPrincipal = (UserDetailsImpl) authentication.getPrincipal();
+		User userPrincipal = (User) authentication.getPrincipal();
 
 		return Jwts.builder()
 				.setSubject((userPrincipal.getUsername()))

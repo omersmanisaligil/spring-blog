@@ -10,7 +10,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.Set;
 
-public interface BlogDAO extends JpaRepository<Blog, Integer> {
+public interface BlogDAO extends JpaRepository<Blog, Long> {
     @Override
     Page<Blog> findAll(Pageable pageable);
 
